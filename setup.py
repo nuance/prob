@@ -20,8 +20,7 @@ setup(
     license = "BSD",
     keywords = "probability",
     url = "http://github.com/nuance/prob",
-    packages=['prob', 'tests'],
-    long_description=read('README.md'),
+    packages=['prob'],
     classifiers=[
         "Development Status :: 3 - Alpha",
 		"Topic :: Scientific/Engineering :: Mathematics",
