@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name = "prob",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Matt Jones",
     author_email = "oss@mhjones.org",
     description = ("Utilities for creating and working with discrete"

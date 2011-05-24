@@ -1,7 +1,7 @@
 import math
 
 # A constant denoting the default value, for use in the apply methods
-DEFAULT = {}
+DEFAULT = tuple()
 
 def _log(x):
 	"""Python is stupid sometimes"""
@@ -21,7 +21,8 @@ class Counter(dict):
 		self.base = float(base)
 
 	def __missing__(self, key):
-		self[key] = self.base
+		if key is not DEFAULT:
+			self[key] = self.base
 
 		return self.base
 
@@ -69,11 +70,16 @@ class Counter(dict):
 		else:
 			self.apply(lambda key, value: operation(value, other[key]), self._keys(self, other))
 
+		return self
+
 	def __iadd__(self, other):
-		self._iop(other, lambda a, b: a + b)
+		return self._iop(other, lambda a, b: a + b)
 
 	def __imul__(self, other):
-		self._iop(other, lambda a, b: a * b)
+		return self._iop(other, lambda a, b: a * b)
+
+	def __idiv__(self, other):
+		return self._iop(other, lambda a, b: a / b)
 
 	def _op(self, other, operation):
 		result = self.copy()
@@ -86,11 +92,17 @@ class Counter(dict):
 	def __mul__(self, other):
 		return self._op(other, lambda a, b: a * b)
 
+	def __div__(self, other):
+		return self._op(other, lambda a, b: a / b)
+
 	def __radd__(self, other):
 		return self + other
 
 	def __rmul__(self, other):
 		return self * other
+
+	def __rdiv__(self, other):
+		return self / other
 
 	def __pow__(self, power, modulo=None):
 		result = self.copy()

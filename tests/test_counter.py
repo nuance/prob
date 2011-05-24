@@ -70,6 +70,81 @@ class CounterTest(unittest.TestCase):
 
 		assert c.inner_product(o) == 7.0
 
+	def _check(self, counter, base, values):
+		assert counter.base == base
+		assert set(counter) == set(values), (set(counter), set(values))
+
+		for key, value in values.iteritems():
+			assert counter[key] == value, (key, value, counter[key])
+
+	def test_ops_counter(self):
+		c = prob.Counter(0.0)
+		c['a'] = 1.0
+		c['b'] = 2.0
+
+		o = prob.Counter(0.5)
+		o['a'] = 0.1
+
+		r = c + o
+		self._check(r, 0.5, {'a': 1.1, 'b': 2.5})
+		r = c * o
+		self._check(r, 0.0, {'a': 0.1, 'b': 1.0})
+		r = c / o
+		self._check(r, 0.0, {'a': 10.0, 'b': 4.0})
+
+	def test_iops_counter(self):
+		c = prob.Counter(0.0)
+		c['a'] = 1.0
+		c['b'] = 2.0
+
+		o = prob.Counter(0.5)
+		o['a'] = 0.1
+
+		r = c.copy()
+		r += o
+		self._check(r, 0.5, {'a': 1.1, 'b': 2.5})
+
+		r = c.copy()
+		r *= o
+		self._check(r, 0.0, {'a': 0.1, 'b': 1.0})
+
+		r = c.copy()
+		r /= o
+		self._check(r, 0.0, {'a': 10.0, 'b': 4.0})
+
+	def test_ops_number(self):
+		c = prob.Counter(0.0)
+		c['a'] = 1.0
+		c['b'] = 2.0
+
+		o = 0.5
+
+		r = c + o
+		self._check(r, 0.5, {'a': 1.5, 'b': 2.5})
+		r = c * o
+		self._check(r, 0.0, {'a': 0.5, 'b': 1.0})
+		r = c / o
+		self._check(r, 0.0, {'a': 2.0, 'b': 4.0})
+
+	def test_iops_number(self):
+		c = prob.Counter(0.0)
+		c['a'] = 1.0
+		c['b'] = 2.0
+
+		o = 0.5
+
+		r = c.copy()
+		r += o
+		self._check(r, 0.5, {'a': 1.5, 'b': 2.5})
+
+		r = c.copy()
+		r *= o
+		self._check(r, 0.0, {'a': 0.5, 'b': 1.0})
+
+		r = c.copy()
+		r /= o
+		self._check(r, 0.0, {'a': 2.0, 'b': 4.0})
+
 
 if __name__ == "__main__":
 	unittest.main()
